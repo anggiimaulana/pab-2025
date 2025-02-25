@@ -4,5 +4,5 @@ void main() {
   print("Masukan Nama Anda: ");
   String? nama = stdin.readLineSync();
 
-  print(nama);
+  print("Nama saya adalah $nama");
 }

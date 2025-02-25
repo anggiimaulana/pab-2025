@@ -7,7 +7,7 @@ void main() {
   double tinggi = 173.5;
   bool isLulus = true;
 
-  // membuat variabel dengan kata kunci var
+  // membuat variabel dengan var
   var alamat = "Indramayu, Jawa Barat, Indonesia";
 
   // mencetak variabel
