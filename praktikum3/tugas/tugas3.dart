@@ -2,7 +2,7 @@ import 'dart:io';
 
 List<Map<String, dynamic>> buku = [];
 List<Map<String, String>> mahasiswa = [];
-List<Map<String, dynamic>> peminjaman = [];
+List<Map<String, dynamic>> peminjam = [];
 
 void tambahBuku() {
   stdout.write("Masukan ID Buku: ");
@@ -64,7 +64,7 @@ void pinjamBuku() {
     return;
   }
 
-  int jumlahPinjaman = peminjaman.where((p) => p['nim'] == nim).length;
+  int jumlahPinjaman = peminjam.where((p) => p['nim'] == nim).length;
   if (jumlahPinjaman >= 2) {
     print("Mahasiswa hanya diperbolehkan meminjam maksimal 2 buku.");
     return;
@@ -73,5 +73,112 @@ void pinjamBuku() {
   stdout.write("Masukan ID Buku yang dipinjam: ");
   String idBuku = stdin.readLineSync() ?? '';
 
-  var dataBuku = buku.firstWhere((b) => b['id'] == buku, orElse: () => {});
+  var dataBuku = buku.firstWhere((b) => b['id'] == idBuku, orElse: () => {});
+
+  if (dataBuku.isEmpty) {
+    print("Buku tidak ditemukan!");
+    return;
+  }
+
+  if (dataBuku['stok'] <= 1) {
+    print("Buku ini tidak dapat dipinjam karena stok hanya tersisa 1!");
+    return;
+  }
+
+  // mengurangi stok buku
+  dataBuku['stok'] -= 1;
+
+  peminjam.add({
+    "nim": nim,
+    "nama": mahasiswaData['nama'],
+    "id_buku": dataBuku['id'],
+    "judul": dataBuku['judul']
+  });
+
+  print("\nPeminjaman berhasil!");
+  print("====================");
+}
+
+// Fungsi untuk menampilkan semua data buku
+void tampilkanBuku() {
+  print("\n=== Daftar Buku ===");
+  if (buku.isEmpty) {
+    print("Belum ada data buku.");
+  } else {
+    for (var b in buku) {
+      print(
+          "ID: ${b['id']}, Judul: ${b['judul']}, Penerbit: ${b['penerbit']}, Stok: ${b['stok']}");
+    }
+  }
+  print("\n");
+}
+
+// Fungsi untuk menampilkan semua mahasiswa
+void tampilkanMahasiswa() {
+  print("\n=== Daftar Mahasiswa ===");
+  if (mahasiswa.isEmpty) {
+    print("Belum ada data mahasiswa.");
+  } else {
+    for (var m in mahasiswa) {
+      print("NIM: ${m['nim']}, Nama: ${m['nama']}");
+    }
+  }
+  print("\n");
+}
+
+// Fungsi untuk menampilkan semua peminjaman
+void tampilkanPeminjaman() {
+  print("\n=== Daftar Peminjaman ===");
+  if (peminjam.isEmpty) {
+    print("Belum ada data peminjaman.");
+  } else {
+    for (int i = 0; i < peminjam.length; i++) {
+      print(
+          "${i + 1}. NIM: ${peminjam[i]['nim']}, Nama: ${peminjam[i]['nama']}, Buku: ${peminjam[i]['judul']}");
+    }
+  }
+  print("\n");
+}
+
+// Menu utama
+void main() {
+  while (true) {
+    print("==== Sistem Perpustakaan ====");
+    print("1. Tambah Buku");
+    print("2. Tambah Mahasiswa");
+    print("3. Pinjam Buku");
+    print("4. Tampilkan Buku");
+    print("5. Tampilkan Mahasiswa");
+    print("6. Tampilkan Peminjaman");
+    print("7. Keluar");
+    stdout.write("Pilih menu (1-7): ");
+
+    String? pilihan = stdin.readLineSync();
+
+    switch (pilihan) {
+      case '1':
+        tambahBuku();
+        break;
+      case '2':
+        tambahMahasiswa();
+        break;
+      case '3':
+        pinjamBuku();
+        break;
+      case '4':
+        tampilkanBuku();
+        break;
+      case '5':
+        tampilkanMahasiswa();
+        break;
+      case '6':
+        tampilkanPeminjaman();
+        break;
+      case '7':
+        print("Terima kasih! Program selesai");
+        return;
+      default:
+        print("Pilihan tidak valid! Silahkan coba lagi. \n");
+    }
+  }
 }
