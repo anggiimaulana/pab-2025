@@ -1,6 +1,6 @@
 // routes
 import 'package:flutter/material.dart';
-import 'package:flutter_pab/widget/widget/navigator.dart';
+import 'package:flutter_pab/widget/widget/navigasi/navigator.dart';
 
 void main() {
   runApp(MaterialApp(
