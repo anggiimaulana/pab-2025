@@ -6,9 +6,8 @@ import 'tampilkan_buku.dart';
 import 'tampilkan_mhs.dart';
 import 'tampilkan_peminjam.dart';
 
-// Struktur Data
-List<Map<String, dynamic>> buku = [];
 List<Map<String, String>> mahasiswa = [];
+List<Map<String, dynamic>> buku = [];
 List<Map<String, dynamic>> peminjaman = [];
 
 // Menu utama
@@ -47,7 +46,6 @@ void main() {
         break;
       case '7':
         print("\nTerima kasih! Program selesai.");
-        print("================================\n");
         return;
       default:
         print("Pilihan tidak valid! Silakan coba lagi.\n");

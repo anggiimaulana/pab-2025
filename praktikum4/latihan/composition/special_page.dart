@@ -11,4 +11,9 @@ class SpecialPage {
   String getTitle() {
     return "Ttitle of page $number";
   }
+
+  @override
+  String toString() {
+    return "$number";
+  }
 }

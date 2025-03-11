@@ -1,4 +1,3 @@
-// Fungsi untuk menambahkan mahasiswa
 import 'dart:io';
 
 import 'tugas_3.dart';

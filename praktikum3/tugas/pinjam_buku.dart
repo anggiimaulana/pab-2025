@@ -1,4 +1,3 @@
-// Fungsi untuk melakukan peminjaman buku
 import 'dart:io';
 
 import 'tugas_3.dart';
@@ -17,7 +16,7 @@ void pinjamBuku() {
     return;
   }
 
-  // Cek jumlah buku yang sudah dipinjam mahasiswa ini
+  // Cek jumlah buku yang sudah dipinjam
   int jumlahPinjaman = peminjaman.where((p) => p['nim'] == nim).length;
   if (jumlahPinjaman >= 2) {
     print("\nMahasiswa hanya diperbolehkan meminjam maksimal 2 buku.\n");
@@ -42,7 +41,7 @@ void pinjamBuku() {
     return;
   }
 
-  // Mengurangi stok buku
+  // kurangi stok buku
   bukuData['stok'] -= 1;
 
   peminjaman.add({
