@@ -8,7 +8,7 @@ class MyContainer extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Ini judul project container",
+          "Project Container",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         ),
         backgroundColor: Colors.blueAccent,

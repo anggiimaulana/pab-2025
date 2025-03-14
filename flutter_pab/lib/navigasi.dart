@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
 
-class MyHome extends StatelessWidget {
-  const MyHome({super.key});
+class MyNavigasi extends StatelessWidget {
+  const MyNavigasi({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Belajar Navigasi PAB",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+      backgroundColor: Colors.blueAccent,
+      appBar: AppBar(title: const Text("Navigasi")),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blueAccent),
+              child: Text("Menu", style: TextStyle(color: Colors.white)),
+            ),
+            ListTile(
+              title: const Text("Home Page"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text("Halaman Kedua"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SecondPage()),
+                );
+              },
+            ),
+          ],
         ),
-        backgroundColor: Colors.blueAccent,
       ),
       body: Center(
         child: ElevatedButton(
