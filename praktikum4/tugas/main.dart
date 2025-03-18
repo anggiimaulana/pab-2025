@@ -7,22 +7,22 @@ import 'transaksi.dart';
 void main() {
   try {
     // Membuat operator
-    Operator operator = Operator("John Doe", "OP123");
+    Operator operator = Operator(nama: "Miawww", idOperator: "OP123");
 
     // Membuat topping
-    Topping kejuMozzarella = Topping(5000, "Keju Mozzarella");
-    Topping sosis = Topping(7000, "Sosis");
+    Topping kejuMozzarella = Topping(hargaTopping: 5000, namaTopping: "Keju Mozzarella");
+    Topping sosis = Topping(hargaTopping: 7000, namaTopping: "Sosis");
 
     // Membuat pizza
-    Pizza pizzaPepperoni = Pizza("Pepperoni");
+    Pizza pizzaPepperoni = Pizza(namaPizza: "Pepperoni");
     pizzaPepperoni.addTopping(kejuMozzarella);
     pizzaPepperoni.addTopping(sosis);
 
-    Pizza pizzaMargherita = Pizza("Margherita");
+    Pizza pizzaMargherita = Pizza(namaPizza: "Margherita");
     pizzaMargherita.addTopping(kejuMozzarella);
 
     // Membuat transaksi
-    Transaksi transaksi = Transaksi("CUST001", "Alice");
+    Transaksi transaksi = Transaksi(idCustomer: "CUST001", nama: "Samsul");
 
     // Menambahkan pizza ke transaksi
     transaksi.addPizza(pizzaPepperoni, 1);

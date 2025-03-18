@@ -6,7 +6,10 @@ class Kendaraan {
   String? _merk;
 
   // constructor
-  Kendaraan(this._cc, this._merk);
+  Kendaraan({String? merk, int? cc}) {
+    this._cc = cc;
+    this._merk = merk;
+  }
 
   void maju() {
     stdout.write(

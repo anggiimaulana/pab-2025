@@ -3,7 +3,7 @@ import 'person.dart';
 class Operator extends Person {
   String? _idOperator;
 
-  Operator(String nama, String idOperator) : super(nama) {
+  Operator({String? nama, String? idOperator}) : super(nama: nama) {
     this._idOperator = idOperator;
   }
 

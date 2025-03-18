@@ -3,7 +3,7 @@ import 'person.dart';
 class Dosen extends Person {
   String? _nidn;
 
-  Dosen(String nama, String nidn) : super(nama) {
+  Dosen({String? nama, String? nidn}) : super(nama: nama) {
     this._nidn = nidn;
   }
 

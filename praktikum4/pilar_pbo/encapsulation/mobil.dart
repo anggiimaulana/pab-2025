@@ -4,7 +4,10 @@ class Mobil {
   int? _cc;
 
   // constructor
-  Mobil(this._merk, this._cc);
+  Mobil({String? merk, int? cc}) {
+    this._merk = merk;
+    this._cc = cc;
+  }
 
   // setter
   void setMerk(String merk) {

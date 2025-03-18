@@ -3,7 +3,8 @@ import 'bangun_datar.dart';
 class Segitiga extends BangunDatar {
   int? _sisiMiring;
 
-  Segitiga(int panjang, int lebar, int sisiMiring) : super(panjang, lebar) {
+  Segitiga({int? panjang, int? lebar, int? sisiMiring})
+    : super(panjang: panjang, lebar: lebar) {
     _sisiMiring = sisiMiring;
   }
 

@@ -4,7 +4,10 @@ class Book {
   String? title;
   SpecialPage? page;
 
-  Book(this.title, this.page);
+  Book({String? title, SpecialPage? page}) {
+    this.title = title;
+    this.page = page;
+  }
 
   void setPageCount(int count) {
     print("Setting page count to $count");

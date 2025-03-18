@@ -11,8 +11,8 @@ class Transaksi {
   Operator? _operator;
   Customer _customer;
 
-  Transaksi(String idCustomer, String nama)
-    : _customer = Customer(idCustomer, nama),
+  Transaksi({String? idCustomer, String? nama})
+    : _customer = Customer(idCustomer: idCustomer, nama: nama),
       _nomor = ++counter;
 
   void addPizza(Pizza pizza, int qty) {

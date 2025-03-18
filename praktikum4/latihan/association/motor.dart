@@ -4,7 +4,9 @@ class Motor {
   num? _cc;
   Pengemudi? _pengemudi;
 
-  Motor(this._cc);
+  Motor({num? cc}) {
+    this._cc = cc;
+  }
   void setCc(num cc) => _cc;
   num getCc() => _cc!;
   void setPengemudi(Pengemudi pengemudi) {

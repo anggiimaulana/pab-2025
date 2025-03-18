@@ -3,8 +3,8 @@ import 'mahasiswa.dart';
 class MahasiswaLuarNegeri extends Mahasiswa {
   String? _passport;
 
-  MahasiswaLuarNegeri(String nim, String nama, String passport)
-    : super(nim, nama) {
+  MahasiswaLuarNegeri({String? nim, String? nama, String? passport})
+    : super(nim: nim, nama: nama) {
     this._passport = passport;
   }
 

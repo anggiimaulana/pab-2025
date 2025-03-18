@@ -2,7 +2,7 @@ class BangunDatar {
   int? _panjang;
   int? _lebar;
 
-  BangunDatar(int panjang, int lebar) {
+  BangunDatar({int? panjang, int? lebar}) {
     _panjang = panjang;
     _lebar = lebar;
   }

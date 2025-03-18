@@ -5,7 +5,7 @@ class Produk {
   String? nama;
   List<JenisProduk> dataJenisProduk = [];
 
-  Produk(String kode, String nama) {
+  Produk({String? kode, String? nama}) {
     this.kode = kode;
     this.nama = nama;
   }

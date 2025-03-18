@@ -2,7 +2,9 @@ class SpecialPage {
   int? number;
   SpecialPage? page;
 
-  SpecialPage(this.number);
+  SpecialPage({int? number}) {
+    this.number = number;
+  }
 
   void setMargint() {
     print("Margin set for page: $number");

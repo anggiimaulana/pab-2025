@@ -6,7 +6,9 @@ class Truk extends Kendaraan {
   String? _gandengan;
 
   // constructor
-  Truk(int? cc, String? merk, this._gandengan) : super(cc, merk);
+  Truk({int? cc, String? merk, String? gandengan}) : super(cc: cc, merk: merk) {
+    this._gandengan = gandengan;
+  }
 
   // setter & getter
   set gandengan(String gandengan) => _gandengan;
