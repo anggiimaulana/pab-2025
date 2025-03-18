@@ -2,7 +2,10 @@ class Matakuliah {
   String? _kodeMatkul;
   String? _namaMatkul;
 
-  Matakuliah(this._kodeMatkul, this._namaMatkul);
+  Matakuliah({String? kodeMatkul, String? namaMatkul}) {
+    this._kodeMatkul = kodeMatkul;
+    this._namaMatkul = namaMatkul;
+  }
 
   String getKodeMatkul() {
     return this._kodeMatkul!;

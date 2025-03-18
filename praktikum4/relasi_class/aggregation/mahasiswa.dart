@@ -4,7 +4,9 @@ class Mahasiswa {
   String? _nim;
   List<Matakuliah> _dataMatkul = [];
 
-  Mahasiswa(this._nim);
+  Mahasiswa({String? nim}) {
+    this._nim = nim;
+  }
 
   void mengambilMatkul(Matakuliah matkul) => this._dataMatkul.add(matkul);
 

@@ -1,11 +1,9 @@
 class Order {
-  int? _total;
+  int _total;
 
-  Order(this._total);
+  Order({int total = 0}) : _total = total;
 
-  int getTotal() {
-    return _total!;
-  }
+  int getTotal() => _total;
 
   void setTotal(int total) {
     _total = total;

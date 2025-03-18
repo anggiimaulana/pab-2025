@@ -1,7 +1,9 @@
 class Person {
   String? _nama;
 
-  Person(this._nama);
+  Person({String? nama}) {
+    this._nama = nama;
+  }
 
   String getNama() {
     return this._nama!;
