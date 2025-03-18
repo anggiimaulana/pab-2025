@@ -1,8 +1,8 @@
 void main() {
   // deklarasi List cara 1
   List<String> daftarNama = <String>[];
-  daftarNama.add("Syahirah");
-  daftarNama.add("Nana");
+  daftarNama.add("Anggi");
+  daftarNama.add("Bayu");
   print("Nama pertama ${daftarNama[0]}");
   print("Nama kedua ${daftarNama[1]}");
 

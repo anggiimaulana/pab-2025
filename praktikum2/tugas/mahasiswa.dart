@@ -3,18 +3,18 @@ void main() {
   List<Map<String, dynamic>> mahasiswa = [
     {
       "nim": 2307079,
-      "nama": "Syahirah",
-      "matkul": ["PBO", "PAB"]
+      "nama": "Anggi Maulana",
+      "matkul": ["PBO", "PAB", "CT", "MPPI", "KKC"]
     },
     {
       "nim": 2307055,
-      "nama": "Agnita Najwa",
-      "matkul": ["KKC", "Basis Data Lanjut"]
+      "nama": "Bayu Rokhmatullah",
+      "matkul": ["PBO", "KKC", "KKC", "BDL"]
     },
     {
       "nim": 2307078,
-      "nama": "Salma Rusyda",
-      "matkul": ["Big Data", "Bahasa Inggris 2"]
+      "nama": "Erwan Kurniawan",
+      "matkul": ["Proyek 2", "Basis Data", "Bahasa Indonesia"]
     },
   ];
 
