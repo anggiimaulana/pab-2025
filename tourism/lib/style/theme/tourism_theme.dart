@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tourism/style/color/tourism_colors.dart';
 import 'package:tourism/style/typography/tourism_text_styles.dart';
 
-// todo-04: create a TourismTheme
 class TourismTheme {
-  // todo-07: add theme for light and dark theme
   static ThemeData get lightTheme {
     return ThemeData(
       colorSchemeSeed: TourismColors.blue.color,
@@ -25,7 +23,6 @@ class TourismTheme {
     );
   }
 
-  // todo-05: add static value for textTheme and others
   static TextTheme get _textTheme {
     return TextTheme(
       displayLarge: TourismTextStyles.displayLarge,
@@ -46,7 +43,6 @@ class TourismTheme {
     );
   }
 
-  // todo-06: add static value for app bar theme and others
   static AppBarTheme get _appBarTheme {
     return AppBarTheme(
       toolbarTextStyle: _textTheme.titleLarge,
