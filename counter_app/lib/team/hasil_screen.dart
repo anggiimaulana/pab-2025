@@ -10,7 +10,7 @@ class HasilScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           "Hasil Pertandingan",
           style: TextStyle(color: Colors.white),

@@ -1,6 +1,6 @@
 name: counter_app
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  shared_preferences: ^2.5.3
+  logger: ^2.5.0
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,7 @@
 import 'package:counter_app/counter/tampil_angka.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CounterApp extends StatefulWidget {
   const CounterApp({super.key});
@@ -10,6 +12,28 @@ class CounterApp extends StatefulWidget {
 
 class _CounterAppState extends State<CounterApp> {
   int nilai = 0;
+
+  Logger logger = Logger(printer: PrettyPrinter());
+  SharedPreferences? pref;
+
+  @override
+  void initState() {
+    super.initState();
+    _initSharedPreferences();
+  }
+
+  Future<void> _initSharedPreferences() async {
+    pref = await SharedPreferences.getInstance();
+    setState(() {
+      nilai = pref?.getInt("nilai") ?? 0;
+    });
+    logger.i("SharedPreferences loaded, nilai = $nilai");
+  }
+
+  Future<void> _saveNilai() async {
+    await pref?.setInt("nilai", nilai);
+    logger.i("Nilai disimpan: $nilai");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +58,7 @@ class _CounterAppState extends State<CounterApp> {
                         setState(() {
                           if (nilai > 0) {
                             nilai--;
+                            _saveNilai();
                           }
                         });
                       },
@@ -43,6 +68,7 @@ class _CounterAppState extends State<CounterApp> {
                       onPressed: () {
                         setState(() {
                           nilai++;
+                          _saveNilai();
                         });
                       },
                       child: const Icon(Icons.add),
@@ -56,13 +82,12 @@ class _CounterAppState extends State<CounterApp> {
             bottom: 20,
             right: 20,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => TampilAngka(nilai: nilai.toString()),
-                  ),
+                  MaterialPageRoute(builder: (context) => const TampilAngka()),
                 );
+                await pref!.setInt("nilai", nilai);
               },
               child: const Icon(Icons.chevron_right),
             ),

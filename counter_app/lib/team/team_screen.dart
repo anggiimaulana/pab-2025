@@ -1,5 +1,7 @@
 import 'package:counter_app/team/hasil_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TeamScreen extends StatefulWidget {
   const TeamScreen({super.key});
@@ -11,6 +13,52 @@ class TeamScreen extends StatefulWidget {
 class _TeamScreenState extends State<TeamScreen> {
   int scoreTeamA = 0;
   int scoreTeamB = 0;
+
+  Logger logger = Logger(printer: PrettyPrinter());
+  SharedPreferences? pref;
+
+  @override
+  void initState() {
+    super.initState();
+    _initSharedPreferences();
+  }
+
+  Future<void> _initSharedPreferences() async {
+    pref = await SharedPreferences.getInstance();
+    setState(() {
+      scoreTeamA = pref?.getInt("scoreTeamA") ?? 0;
+      scoreTeamB = pref?.getInt("scoreTeamB") ?? 0;
+    });
+    logger.i("SharedPreferences loaded: A = $scoreTeamA, B = $scoreTeamB");
+  }
+
+  Future<void> _saveScores() async {
+    await pref?.setInt("scoreTeamA", scoreTeamA);
+    await pref?.setInt("scoreTeamB", scoreTeamB);
+    logger.i("Scores saved: A = $scoreTeamA, B = $scoreTeamB");
+  }
+
+  void _incrementScore(String team) {
+    setState(() {
+      if (team == 'A') {
+        scoreTeamA++;
+      } else {
+        scoreTeamB++;
+      }
+    });
+    _saveScores();
+  }
+
+  void _decrementScore(String team) {
+    setState(() {
+      if (team == 'A' && scoreTeamA > 0) {
+        scoreTeamA--;
+      } else if (team == 'B' && scoreTeamB > 0) {
+        scoreTeamB--;
+      }
+    });
+    _saveScores();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,64 +74,7 @@ class _TeamScreenState extends State<TeamScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  children: [
-                    Image.network(
-                      "https://3.bp.blogspot.com/-BDb_ZAelGXY/VxS-AvDGAdI/AAAAAAAABC8/0qzYnlVy2c8AG3AWN-jyWK79-cRESmeDgCLcB/s1600/Logo%2BManchester%2BUnited%2BF.C.png",
-                      height: 75,
-                      width: 75,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 5,
-                          horizontal: 15,
-                        ),
-                        alignment: Alignment.center,
-                        width: 275,
-                        child: const Text(
-                          "Manchester United Senior",
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    Text(scoreTeamA.toString(), style: TextStyle(fontSize: 30)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              if (scoreTeamA > 0) {
-                                scoreTeamA--;
-                              }
-                            });
-                          },
-                          child: Icon(Icons.remove, color: Colors.white),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              scoreTeamA++;
-                            });
-                          },
-                          child: Icon(Icons.add, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                _buildTeamCard("Manchester United Senior", scoreTeamA, 'A'),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   child: Divider(
@@ -93,64 +84,7 @@ class _TeamScreenState extends State<TeamScreen> {
                     endIndent: 50,
                   ),
                 ),
-                Column(
-                  children: [
-                    Image.network(
-                      "https://3.bp.blogspot.com/-BDb_ZAelGXY/VxS-AvDGAdI/AAAAAAAABC8/0qzYnlVy2c8AG3AWN-jyWK79-cRESmeDgCLcB/s1600/Logo%2BManchester%2BUnited%2BF.C.png",
-                      height: 75,
-                      width: 75,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 5,
-                          horizontal: 15,
-                        ),
-                        alignment: Alignment.center,
-                        width: 275,
-                        child: const Text(
-                          "Manchester United Junior",
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    Text(scoreTeamB.toString(), style: TextStyle(fontSize: 30)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              if (scoreTeamB > 0) {
-                                scoreTeamB--;
-                              }
-                            });
-                          },
-                          child: Icon(Icons.remove, color: Colors.white),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              scoreTeamB++;
-                            });
-                          },
-                          child: Icon(Icons.add, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                _buildTeamCard("Manchester United Junior", scoreTeamB, 'B'),
               ],
             ),
           ),
@@ -181,6 +115,50 @@ class _TeamScreenState extends State<TeamScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTeamCard(String teamName, int score, String teamCode) {
+    return Column(
+      children: [
+        Image.network(
+          "https://3.bp.blogspot.com/-BDb_ZAelGXY/VxS-AvDGAdI/AAAAAAAABC8/0qzYnlVy2c8AG3AWN-jyWK79-cRESmeDgCLcB/s1600/Logo%2BManchester%2BUnited%2BF.C.png",
+          height: 75,
+          width: 75,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+            alignment: Alignment.center,
+            width: 275,
+            child: Text(
+              teamName,
+              style: const TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ),
+        ),
+        Text(score.toString(), style: const TextStyle(fontSize: 30)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              onPressed: () => _decrementScore(teamCode),
+              child: const Icon(Icons.remove, color: Colors.white),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              onPressed: () => _incrementScore(teamCode),
+              child: const Icon(Icons.add, color: Colors.white),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

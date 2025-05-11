@@ -1,6 +1,4 @@
-import 'package:counter_app/counter/counter_app.dart';
 import 'package:counter_app/payment/split_bill_screen.dart';
-import 'package:counter_app/team/team_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

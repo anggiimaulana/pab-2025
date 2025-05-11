@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplitBillScreen extends StatefulWidget {
   const SplitBillScreen({super.key});
@@ -11,17 +13,46 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
   int totalBill = 0;
   int jumlahOrang = 0;
   double jumlahPembayaranPerOrang = 0;
+  String hasilPembayaran = "";
+
+  Logger logger = Logger(printer: PrettyPrinter());
+  SharedPreferences? pref;
 
   final TextEditingController totalBillController = TextEditingController();
   final TextEditingController jumlahOrangController = TextEditingController();
 
-  String hasilPembayaran = "";
+  @override
+  void initState() {
+    super.initState();
+    _initSharedPreferences();
+  }
+
+  Future<void> _initSharedPreferences() async {
+    pref = await SharedPreferences.getInstance();
+    logger.i("SharedPreferences loaded");
+  }
 
   @override
   void dispose() {
     totalBillController.dispose();
     jumlahOrangController.dispose();
     super.dispose();
+  }
+
+  void _hitungPembayaran() {
+    setState(() {
+      totalBill = int.tryParse(totalBillController.text) ?? 0;
+      jumlahOrang = int.tryParse(jumlahOrangController.text) ?? 0;
+
+      if (jumlahOrang > 0 && totalBill > 0) {
+        jumlahPembayaranPerOrang = totalBill / jumlahOrang;
+        hasilPembayaran =
+            "${jumlahPembayaranPerOrang.toStringAsFixed(0)} / orang";
+        pref?.setInt("totalBill", totalBill);
+      } else {
+        hasilPembayaran = "Input tidak valid";
+      }
+    });
   }
 
   @override
@@ -66,17 +97,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () {
-                      setState(() {
-                        if (jumlahOrang != 0) {
-                          jumlahPembayaranPerOrang = totalBill / jumlahOrang;
-                        } else {
-                          jumlahPembayaranPerOrang = 0;
-                        }
-                        hasilPembayaran =
-                            "${jumlahPembayaranPerOrang.toStringAsFixed(0)} /orang";
-                      });
-                    },
+                    onPressed: _hitungPembayaran,
                     child: const Text(
                       "Hitung Pembayaran",
                       style: TextStyle(
@@ -87,7 +108,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                _buildDisabledField(
+                _buildResultField(
                   text: hasilPembayaran,
                   hintText: "Jumlah yang dibayar",
                   icon: Icons.money,
@@ -121,20 +142,25 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
     );
   }
 
-  Widget _buildDisabledField({
+  Widget _buildResultField({
     required String text,
     required String hintText,
     required IconData icon,
   }) {
-    return TextField(
-      enabled: false,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: Icon(icon),
-        border: const OutlineInputBorder(),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(),
+        borderRadius: BorderRadius.circular(4),
       ),
-      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-      controller: TextEditingController(text: text),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.black54),
+          const SizedBox(width: 10),
+          Expanded(child: Text(text.isEmpty ? hintText : text)),
+        ],
+      ),
     );
   }
 }
