@@ -27,7 +27,14 @@ class _TampilAngkaState extends State<TampilAngka> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Tampil Angka")),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text(
+          "Tampil Angka",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.indigo,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -35,7 +42,7 @@ class _TampilAngkaState extends State<TampilAngka> {
             Text("Angka Terakhir"),
             Text(
               nilai.toString(),
-              style: const TextStyle(fontSize: 30, color: Colors.red),
+              style: const TextStyle(fontSize: 30, color: Colors.indigo),
             ),
           ],
         ),

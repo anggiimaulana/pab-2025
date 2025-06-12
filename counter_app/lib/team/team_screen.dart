@@ -13,6 +13,12 @@ class TeamScreen extends StatefulWidget {
 class _TeamScreenState extends State<TeamScreen> {
   int scoreTeamA = 0;
   int scoreTeamB = 0;
+  String teamAName = "";
+  String teamBName = "";
+  bool isTeamSet = false;
+
+  final TextEditingController _teamAController = TextEditingController();
+  final TextEditingController _teamBController = TextEditingController();
 
   Logger logger = Logger(printer: PrettyPrinter());
   SharedPreferences? pref;
@@ -26,15 +32,18 @@ class _TeamScreenState extends State<TeamScreen> {
   Future<void> _initSharedPreferences() async {
     pref = await SharedPreferences.getInstance();
     setState(() {
-      scoreTeamA = pref?.getInt("scoreTeamA") ?? 0;
-      scoreTeamB = pref?.getInt("scoreTeamB") ?? 0;
+      teamAName = pref?.getString("teamAName") ?? "";
+      teamBName = pref?.getString("teamBName") ?? "";
+      isTeamSet = teamAName.isNotEmpty && teamBName.isNotEmpty;
     });
-    logger.i("SharedPreferences loaded: A = $scoreTeamA, B = $scoreTeamB");
   }
 
   Future<void> _saveScores() async {
     await pref?.setInt("scoreTeamA", scoreTeamA);
     await pref?.setInt("scoreTeamB", scoreTeamB);
+    await pref?.setString("teamAName", teamAName);
+    await pref?.setString("teamBName", teamBName);
+
     logger.i("Scores saved: A = $scoreTeamA, B = $scoreTeamB");
   }
 
@@ -60,6 +69,23 @@ class _TeamScreenState extends State<TeamScreen> {
     _saveScores();
   }
 
+  void _submitTeams() {
+    setState(() {
+      teamAName =
+          _teamAController.text.trim().isEmpty
+              ? "Team A"
+              : _teamAController.text.trim();
+      teamBName =
+          _teamBController.text.trim().isEmpty
+              ? "Team B"
+              : _teamBController.text.trim();
+      isTeamSet = true;
+
+      logger.i("Nama tim disimpan: Team A = $teamAName, Team B = $teamBName");
+      _saveScores(); // Simpan ke SharedPreferences juga
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,53 +94,87 @@ class _TeamScreenState extends State<TeamScreen> {
         title: const Text("Score Team", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.red,
       ),
-      body: Stack(
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildTeamCard("Manchester United Senior", scoreTeamA, 'A'),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: Divider(
-                    thickness: 2,
-                    color: Colors.grey,
-                    indent: 50,
-                    endIndent: 50,
-                  ),
-                ),
-                _buildTeamCard("Manchester United Junior", scoreTeamB, 'B'),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              onPressed: () {
-                String winner = '';
-                if (scoreTeamA > scoreTeamB) {
-                  winner = "Manchester United Senior";
-                } else if (scoreTeamB > scoreTeamA) {
-                  winner = "Manchester United Junior";
-                } else {
-                  winner = "Draw";
-                }
+      body: isTeamSet ? _buildScoreBoard() : _buildTeamInput(),
+    );
+  }
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HasilScreen(winner: winner),
-                  ),
-                );
-              },
-              child: const Icon(Icons.chevron_right, color: Colors.white),
+  Widget _buildTeamInput() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _teamAController,
+              decoration: const InputDecoration(labelText: "Nama Tim A"),
             ),
-          ),
-        ],
+            TextField(
+              controller: _teamBController,
+              decoration: const InputDecoration(labelText: "Nama Tim B"),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              onPressed: _submitTeams,
+              child: const Text(
+                "Simpan Tim",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildScoreBoard() {
+    return Stack(
+      children: [
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildTeamCard(teamAName, scoreTeamA, 'A'),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 15),
+                child: Divider(
+                  thickness: 2,
+                  color: Colors.grey,
+                  indent: 50,
+                  endIndent: 50,
+                ),
+              ),
+              _buildTeamCard(teamBName, scoreTeamB, 'B'),
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 20,
+          right: 20,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () {
+              String winner = '';
+              if (scoreTeamA > scoreTeamB) {
+                winner = teamAName;
+              } else if (scoreTeamB > scoreTeamA) {
+                winner = teamBName;
+              } else {
+                winner = "Draw";
+              }
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HasilScreen(winner: winner),
+                ),
+              );
+            },
+            child: const Icon(Icons.chevron_right, color: Colors.white),
+          ),
+        ),
+      ],
     );
   }
 

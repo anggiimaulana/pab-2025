@@ -38,7 +38,10 @@ class _CounterAppState extends State<CounterApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Counter App")),
+      appBar: AppBar(
+        title: const Text("Counter App", style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.indigo,
+      ),
       body: Stack(
         children: [
           Center(
@@ -47,13 +50,17 @@ class _CounterAppState extends State<CounterApp> {
               children: [
                 Text(
                   nilai.toString(),
-                  style: const TextStyle(fontSize: 30, color: Colors.red),
+                  style: const TextStyle(fontSize: 30, color: Colors.indigo),
                 ),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.indigo,
+                        iconColor: Colors.white,
+                      ),
                       onPressed: () {
                         setState(() {
                           if (nilai > 0) {
@@ -65,6 +72,10 @@ class _CounterAppState extends State<CounterApp> {
                       child: const Icon(Icons.remove),
                     ),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.indigo,
+                        iconColor: Colors.white,
+                      ),
                       onPressed: () {
                         setState(() {
                           nilai++;
@@ -82,6 +93,10 @@ class _CounterAppState extends State<CounterApp> {
             bottom: 20,
             right: 20,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.indigo,
+                iconColor: Colors.white,
+              ),
               onPressed: () async {
                 Navigator.push(
                   context,

@@ -1,6 +1,10 @@
+import 'package:counter_app/payment/login_screen.dart';
+import 'package:counter_app/payment/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:logger/logger.dart';
+
+final Logger logger = Logger();
 
 class SplitBillScreen extends StatefulWidget {
   const SplitBillScreen({super.key});
@@ -15,7 +19,6 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
   double jumlahPembayaranPerOrang = 0;
   String hasilPembayaran = "";
 
-  Logger logger = Logger(printer: PrettyPrinter());
   SharedPreferences? pref;
 
   final TextEditingController totalBillController = TextEditingController();
@@ -29,7 +32,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
 
   Future<void> _initSharedPreferences() async {
     pref = await SharedPreferences.getInstance();
-    logger.i("SharedPreferences loaded");
+    logger.i("SharedPreferences loaded di SplitBillScreen");
   }
 
   @override
@@ -44,15 +47,33 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
       totalBill = int.tryParse(totalBillController.text) ?? 0;
       jumlahOrang = int.tryParse(jumlahOrangController.text) ?? 0;
 
+      logger.d("Input total: $totalBill, jumlah orang: $jumlahOrang");
+
       if (jumlahOrang > 0 && totalBill > 0) {
         jumlahPembayaranPerOrang = totalBill / jumlahOrang;
         hasilPembayaran =
             "${jumlahPembayaranPerOrang.toStringAsFixed(0)} / orang";
+
         pref?.setInt("totalBill", totalBill);
+        logger.i(
+          "Pembayaran dihitung: $hasilPembayaran disimpan ke SharedPreferences",
+        );
       } else {
         hasilPembayaran = "Input tidak valid";
+        logger.w("Input tidak valid: total=$totalBill, orang=$jumlahOrang");
       }
     });
+  }
+
+  Future<void> _logout() async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.clear();
+    logger.i("User logout, SharedPreferences dibersihkan");
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+    );
   }
 
   @override
@@ -64,6 +85,22 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.indigo,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person, color: Colors.white),
+            onPressed: () {
+              logger.i("Navigasi ke halaman profil");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfileScreen()),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            onPressed: _logout,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -77,6 +114,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                   icon: Icons.monetization_on,
                   onChanged: (value) {
                     totalBill = int.tryParse(value) ?? 0;
+                    logger.d("Input total bill: $value");
                   },
                 ),
                 _buildInputField(
@@ -85,6 +123,7 @@ class _SplitBillScreenState extends State<SplitBillScreen> {
                   icon: Icons.group,
                   onChanged: (value) {
                     jumlahOrang = int.tryParse(value) ?? 0;
+                    logger.d("Input jumlah orang: $value");
                   },
                 ),
                 SizedBox(
